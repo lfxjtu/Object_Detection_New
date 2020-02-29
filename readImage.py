@@ -14,21 +14,16 @@ image_name_middle = ""
 refPt = []
 cropping = False
 str1 = []
-car_path_name = 'cars.txt'          # press 'c' to save car coordinates in cars.txt
-bike_path_name = 'bike.txt'         # press 'k' to save car coordinates in bike.txt
-bus_path_name = 'bus.txt'           # press 'b' to save car coordinates in bus.txt
-motorbike_path_name = 'mbike.txt'   # press 'm' to save car coordinates in mbike.txt
-person_path_name = 'person.txt'     # press 'p' to save car coordinates in person.txt
-
+path_name = 'cars.txt'
 
 
 # clone = null
 
 
-def write_to_file(file_name, x_top, y_top, x_bottom, y_bottom):
+def write_to_file(x_top, y_top, x_bottom, y_bottom):
     # Writes the mouse coordinates to a text file
     # open the mouse coordinates
-    with open(file_name, 'a') as f:
+    with open(path_name, 'a') as f:
         # create a string ready to write to the file
         coordinates = str(x_top) + ',' + str(y_top) + ',' + str(x_bottom) + ',' + str(y_bottom) + ':'
 
@@ -77,28 +72,10 @@ def click_and_crop(event, x, y, flags, param):
         #  print (key2)
 
         # if the 'r' key is pressed, reset the cropping region
-        if key2 == ord('c'):
-            write_to_file(car_path_name, refPt[0][0], refPt[0][1], refPt[1][0], refPt[1][1])  # top left and bottom right x, y
-            print ("c key is pressed")
-            print ("car coordinate saved to file")
-        if key2 == ord('k'):
-            write_to_file(bike_path_name, refPt[0][0], refPt[0][1], refPt[1][0], refPt[1][1])  # top left and bottom right x, y
-            print ("k key is pressed")
-            print ("bike coordinate saved to file")
-        if key2 == ord('b'):
-            write_to_file(bus_path_name, refPt[0][0], refPt[0][1], refPt[1][0], refPt[1][1])  # top left and bottom right x, y
-            print ("b key is pressed")
-            print ("bus coordinate saved to file")
-        if key2 == ord('m'):
-            write_to_file(motorbike_path_name, refPt[0][0], refPt[0][1], refPt[1][0], refPt[1][1])  # top left and bottom right x, y
-            print ("m key is pressed")
-            print ("motorbike coordinate saved to file")
-        if key2 == ord('p'):
-            write_to_file(person_path_name, refPt[0][0], refPt[0][1], refPt[1][0], refPt[1][1])  # top left and bottom right x, y
-            print ("p key is pressed")
-            print ("pedestrian coordinate saved to file")
-
-
+        if key2 == ord('s'):
+            write_to_file(refPt[0][0], refPt[0][1], refPt[1][0], refPt[1][1])  # top left and bottom right x, y
+            print ("coordinate saved to file")
+            print ("s key is pressed")
         # write_to_file(refPt[0][0], refPt[0][1], refPt[1][0], refPt[1][1])#top left and bottom right x, y
 
 
@@ -113,20 +90,18 @@ cv2.setMouseCallback("image", click_and_crop)
 drawing = False
 for i in range(1, 401):
     # i = i + 1
-    image_name_middle = str(i).zfill(4)
-    print(image_name_middle)
-
-#    if i < 10:
-#        image_name_middle = "000" + str(i)
-#    elif i < 100:
-#        image_name_middle = "00" + str(i)
-#    else:
-#        image_name_middle = "0" + str(i)
+    print(str(i))
+    if i < 10:
+        image_name_middle = "000" + str(i)
+    elif i < 100:
+        image_name_middle = "00" + str(i)
+    else:
+        image_name_middle = "0" + str(i)
     image_name = image_name_pre + image_name_middle + image_name_post
 
-    print ("loading an image named " + image_name)
-#    print (image_name)
-    input_image = cv2.imread(path + image_name)
+    print("loading an image named " + image_name)
+    print(image_name)
+    input_image = cv2.imread(image_name)
 
     print ("Computing histogram equalization.")
     # Histogram equalisation using gray scale image. The image loaded is in RGB
@@ -137,15 +112,15 @@ for i in range(1, 401):
     # image
     cv2.imshow("image", clone)
     key = cv2.waitKey()  # & 0xFF
-#    print (key)
+    print (key)
 
     # if the 'r' key is pressed, reset the cropping region
     if key == ord('r'):  # ord("r"):
         current_image = clone.copy()
         print ("r key is pressed")
     elif key == ord('n'):  # ord("n"):
-        with open(car_path_name, 'a') as f:
-            f.write("="'\n')
+        with open(path_name, 'a') as f:
+            f.write('\n')
         continue
         print ("n key is pressed")
 
